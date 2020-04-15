@@ -86,13 +86,27 @@ class Player
 
 Player::Player() {
 
+    myName = "   ";
 }
 
 void Player::addCard(Card c) {
 
+    myHand.push_back(c); // add card to deck , vector
+
 }
 
 void Player::bookCards(Card c1, Card c2) {
+
+    if(c1.getRank() == c2.getRank()){
+
+        myBook.push_back(c1);           //add cards to book
+        removeCardFromHand(c1);         //remove the cards from player's hand
+
+        myBook.push_back(c2);
+        removeCardFromHand(c2);
+
+
+    }
 
 }
 
@@ -109,16 +123,60 @@ Card Player::chooseCardFromHand() const {
 }
 
 bool Player::cardInHand(Card c) const {
-    return false;
+
+    bool InHand;
+    int i;
+
+    for(i = 0; i < myHand.size(); i++){
+
+        if(c == myHand[i]){
+            InHand =  true;
+        }
+    }
+
+    InHand = false;
+    return InHand;
+
 }
 
 Card Player::removeCardFromHand(Card c) {
-    return Card();
+
+    Card removed(0, Card::Suit(Card::spades));                    // returns "removed" if found in deck
+    int i = 0;                           //counter
+
+    while(cardInHand(c)){
+
+        for(i = 0; i < myHand.size(); i++){
+
+            if(c == myHand[i]){
+
+                removed = myHand[i];                    //stores card to be returned
+
+                myHand[i] = myHand[myHand.size() - 1]; // stores the card at back of the vector to the current position of desired-removed card
+                myHand[myHand.size() - 1] = removed;   // Set back of vector to desire-removed card
+                myHand.pop_back();                     // use popback to remove the last element in a vector
+                return removed;
+
+            }
+        }
+    }
+    return removed;                                    // returns Ace of spades if not removed properly
 }
 
 string Player::showHand() const {
 
-    return std::__cxx11::string();
+    string Hand;
+
+    int j = 0;
+    while(j + 1 != myHand.size()){
+        Hand = Hand + myHand[j].toString();
+        Hand = Hand + ", ";
+        j++;
+    }
+    Hand = Hand + myHand[j].toString();
+
+
+    return Hand;
 }
 
 string Player::showBooks() const {
