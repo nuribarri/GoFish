@@ -37,7 +37,7 @@ class Player
     //this function will check a players hand for a pair. 
     //If a pair is found, it returns true and populates the two variables with the cards tha make the pair.
 
-    bool checkHandForBook(Card &c1, Card &c2);
+//    bool checkHandForBook(Card &c1, Card &c2);
 
     //OPTIONAL
     // comment out if you decide to not use it    
@@ -110,16 +110,35 @@ void Player::bookCards(Card c1, Card c2) {
 
 }
 
-bool Player::checkHandForBook(Card &c1, Card &c2) {
-    return false;
-}
+//bool Player::checkHandForBook(Card &c1, Card &c2) {
+//    return false;
+//}
 
 bool Player::rankInHand(Card c) const {
-    return false;
+
+    bool InHand;
+
+    for(int i = 0; i < myHand.size(); i++){
+
+        if(c.getRank() == myHand[i].getRank()){
+            InHand =  true;
+            return InHand;
+        }
+    }
+
+    InHand = false;
+    return InHand;
+
 }
 
 Card Player::chooseCardFromHand() const {
-    return Card();
+
+    int rand1;
+
+    rand1 = rand() % myHand.size();     // selects random card from hand
+
+    return myHand[rand1];
+
 }
 
 bool Player::cardInHand(Card c) const {
@@ -167,7 +186,9 @@ string Player::showHand() const {
 
     string Hand;
 
+
     int j = 0;
+    
     while(j + 1 != myHand.size()){
         Hand = Hand + myHand[j].toString();
         Hand = Hand + ", ";
@@ -180,22 +201,68 @@ string Player::showHand() const {
 }
 
 string Player::showBooks() const {
-    return std::__cxx11::string();
+
+    string Book;
+
+    int j = 0;
+
+    while(j + 1 != myHand.size()){
+
+        Book = Book + myHand[j].toString();
+        Book = Book + ", ";
+        j++;
+    }
+    Book = Book + myHand[j].toString();
+
+
+    return Book;
 }
 
 int Player::getHandSize() const {
-    return 0;
+
+    int handSize = myHand.size();
+
+    return handSize;
+
 }
 
 int Player::getBookSize() const {
-    return 0;
+
+    int bookSize = myBook.size();
+
+    return bookSize;
 }
 
 bool Player::checkHandForPair(Card &c1, Card &c2) {
+
+    int i;
+    int k;
+
+    for(i = 0; i < myHand.size(); i++){
+        for(k = i +1; k < myHand.size(); k++){
+            if(myHand[i] == myHand[k]){
+                c1 = myHand[i];
+                c2 = myHand[k];
+                return true;
+            }
+
+        }
+    }
     return false;
 }
 
 bool Player::sameRankInHand(Card c) const {
+
+    int i;
+
+    for(i = 0; i < myHand.size(); i++){
+
+        if(myHand[i].getRank() == c.getRank()){
+                return true;
+        }
+
+    }
+
     return false;
 }
 
